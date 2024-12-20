@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Window">
+  <grid id="27dc6" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="d1edb" binding="JPanelConvert" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="754f7" class="javax.swing.JButton" binding="buttonConvert">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Транслитерировать!"/>
+            </properties>
+          </component>
+          <hspacer id="4ba27">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+        </children>
+      </grid>
+      <scrollpane id="548a6">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="58d9d" class="javax.swing.JTextArea" binding="textAreaStart">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <scrollpane id="97070">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="34c40" class="javax.swing.JTextArea" binding="textAreaFinal">
+            <constraints/>
+            <properties>
+              <editable value="false"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+    </children>
+  </grid>
+</form>
+public class Window extends javax.swing.JFrame {
+    private JTextArea textAreaStart;
+    private JButton buttonConvert;
+    private JTextArea textAreaFinal;
+    private JPanel rootPanel;
+
+    public Window() {
+        // Устанавливаем заголовок окна
+        setTitle("Транслитерация");
+        // Устанавливаем операцию закрытия окна
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Инициализируем компоненты
+        textAreaStart = new JTextArea(10, 30);
+        buttonConvert = new JButton("Конвертировать");
+        textAreaFinal = new JTextArea(10, 30);
+
+        // Устанавливаем предпочтительные размеры для текстовых полей и кнопки
+        textAreaStart.setPreferredSize(new Dimension(300, 100)); // Ширина 300, высота 100
+        textAreaFinal.setPreferredSize(new Dimension(300, 100)); // Ширина 300, высота 100
+        buttonConvert.setPreferredSize(new Dimension(150, 30)); // Ширина 150, высота 30
+
+        // Создаем панель с GridLayout
+        rootPanel = new JPanel(new GridLayout(3, 1)); // 3 строки, 1 столбец
+
+        // Добавляем компоненты на панель
+        rootPanel.add(new JScrollPane(textAreaStart)); // Добавляем текстовую область с прокруткой
+        rootPanel.add(buttonConvert); // Добавляем кнопку
+        rootPanel.add(new JScrollPane(textAreaFinal)); // Добавляем текстовую область с прокруткой
+
+        // Устанавливаем панель в качестве контента окна
+        setContentPane(rootPanel);
+
+        // Добавляем слушатель событий для кнопки
+        buttonConvert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String inputText = textAreaStart.getText();
+                // Выполняем транслитерацию
+                String transliteratedText = Transliteration1.transliterateCyrillicToLatin(inputText);
+                // Выводим результат обратно в текстовое поле
+                textAreaFinal.setText(transliteratedText);
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        // Создаем экземпляр окна
+        Window w = new Window();
+        // Устанавливаем размер окна
+        w.setSize(600, 500);
+        // Устанавливаем положение окна на экране
+        w.setLocation(300, 200);
+        // Делаем окно видимым
+        w.setVisible(true);
+    }
+}
